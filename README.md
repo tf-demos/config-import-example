@@ -37,7 +37,7 @@ And additionally uses a "filter string" that filters the VMs to import according
 python import.py database
 ```
 
-Upon successfully running the script, this will generate an `imported.tf` file inside (./import-resource)[import-resource].
+Upon successfully running the script, this will generate an `imported.tf` file inside [import-resource](./import-resource).
 
 ### 6. Check the imported resources:
 ```
