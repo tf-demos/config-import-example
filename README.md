@@ -42,6 +42,7 @@ Upon successfully running the script, this will generate an `imported.tf` file i
 ### 6. Check the imported resources:
 ```
 cd ../import-resources
+terraform init
 terraform plan
 ```
 
