@@ -3,6 +3,7 @@ import json
 from dotenv import load_dotenv
 import os
 import urllib3
+import sys
 
 # Disable some warnings (not recommended but just for demo)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -60,6 +61,9 @@ def generate_import(vm_list, filter_string) -> str:
     """
     #Optional for demo, apply filter:
     vm_list = [vm for vm in vm_list if filter_string in vm['name']]
+    if len(vm_list) == 0:
+        raise ValueError(f"No VMs found matching '{filter_string}'. File not generated.")
+
     import_file = "# File genertated automatically by script\n"
     import_file += "# Always check the generated file or plan before running 'terraform apply'\n\n"
 
@@ -73,7 +77,8 @@ def generate_import(vm_list, filter_string) -> str:
 """
             import_file += import_block
         import_file += "# End of generated file\n"
-        # create file for contents
+
+        # create file with contents
         create_file(import_file, "../import-resources/imported.tf")
         return {"status": "success", "message": "File generated successfully", "file": import_file}
     
@@ -95,11 +100,16 @@ def create_file(contents, filename):
 
 if __name__ == "__main__":
     # Example usage
+    if len(sys.argv) < 2:
+        print("Usage: python import.py <filter_string>")
+        sys.exit(1)
+    else:
+        filter_string = sys.argv[1]
+
     try:
         session_token = get_vcenter_session(vcenter_host, vcenter_user, vcenter_password)
         vms = get_vms_for_resource_pool(vcenter_host, session_token, resource_pool_name)
         # generate import file:
-        filter_string = "database"
         generate_import(vms, filter_string)
     except Exception as e:
         print("Error:", e)

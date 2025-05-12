@@ -11,11 +11,44 @@ The goal is to automatically generate a file with the required `import` blocks f
 
 ### 2. Clone this repo
 ```bash
-git clone 
+git clone https://github.com/tf-demos/config-import-example.git import-example
 ```
 
-### Create a virtual environment:
+### 3. Update your vCenter API credentials
+Update the `.env` file with the corresponding host, username and password to authenticate to vCenter. Once done, remove the `.example` from the file name:
 ```bash
-cd 
+cd import-example/python
+# Update the .env file accordingly
+mv .env.example .env
 ```
-### Install the requirements:
+
+### 4. Create a virtual environment and install requirements:
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+### 5. Run the script
+This script generates an `imported.tf` file with the necessary import blocks for Terraform. It retrieves a list of VMs for a specified resource pool in vCenter called "Demo Workloads", you can change that directly in the python code.
+
+And additionally uses a "filter string" that filters the VMs to import according to the name. This parameter must be passed as a command line argument. For example, in this case the filter is `database`:
+
+```bash
+python import.py database
+```
+
+Upon successfully running the script, this will generate an `imported.tf` file inside (./import-resource)[import-resource].
+
+### 6. Check the imported resources:
+```
+cd ../import-resources
+terraform plan -out
+```
+
+### 7. Use wisely
+Once you have imported resources in Terraform you can manage them, modify them, and _destroy them_.
+
+### 8. Cleanup
+```
+deactivate
+```

@@ -35,6 +35,7 @@ terraform.rc
 
 .terraform.lock.hcl
 
+*imported.tf
 
 # Anything related to Python env vars, secrets
 *.env
