@@ -42,7 +42,7 @@ Upon successfully running the script, this will generate an `imported.tf` file i
 ### 6. Check the imported resources:
 ```
 cd ../import-resources
-terraform plan -out
+terraform plan
 ```
 
 ### 7. Use wisely
